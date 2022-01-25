@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  hello:
+    image: my-image-hello-docker
+    container_name: my-container-hello-docker
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - hellonet
+    environment:
+      - PORT=8080
+      - INSTANCE_ID="My Instance"
+    restart: always
+  db:
+    image: postgres:12.2
+    container_name: hello_db
+    ports:
+      - "54322:5432"
+    networks:
+      - hellonet
+    environment:
+      - POSTGRES_USER=hello
+      - POSTGRES_PASSWORD=hello
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+    restart: always
+networks:
+  hellonet:
+
+volumes:
+  postgresql:
+  postgresql_data:
